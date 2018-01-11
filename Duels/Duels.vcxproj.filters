@@ -35,9 +35,6 @@
     <ClCompile Include="Duels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

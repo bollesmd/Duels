@@ -152,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Duels.cpp" />
-    <ClCompile Include="Functions.cpp" />
     <ClCompile Include="InterfaceFunctions.cpp" />
     <ClCompile Include="PlayerFunctions.cpp" />
     <ClCompile Include="stdafx.cpp">
