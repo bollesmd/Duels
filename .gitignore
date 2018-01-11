@@ -322,3 +322,4 @@ ASALocalRun/
 *.binlog
 .vs/Duels/v15/.suo
 *.db
+*.txt
