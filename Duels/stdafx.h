@@ -10,6 +10,10 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include <iostream>
+#include <string>
+#include <random>
+#include <time.h>
+#include <iomanip>
+#include <fstream>
 
-
-// TODO: reference additional headers your program requires here

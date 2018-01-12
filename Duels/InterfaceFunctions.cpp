@@ -1,5 +1,4 @@
-#include<iostream>
-#include<string>
+//Game specific functions: For application affected functionality
 
 #include "stdafx.h"
 #include "functions.h"
@@ -87,3 +86,4 @@ char selectCheck(char select, int s1)
 	}
 	return select;
 }
+

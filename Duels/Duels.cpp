@@ -6,13 +6,6 @@
 // Duels.cpp : Defines the entry point for the console application.
 
 #include "stdafx.h"
-#include <iostream>
-#include <string>
-#include <random>
-#include <time.h>
-#include <iomanip>
-#include <fstream>
-
 #include "functions.h"
 
 using namespace std;
@@ -22,10 +15,11 @@ void main()
 	//declaring player variables
 	string pOne, pTwo, fileName, p1Class, p1Wpn, p1Armor, p2Class, p2Wpn, p2Armor;
 
-	int p1Winner = 0, p2Winner = 0, p1Score = 0, p2Score = 0, 
-		coin = 0, i, x, q, s1, pCounter1 = 0, pCounter2 = 0, timer = NULL,
-		//inventory item menu
-		hPotion1 = 2, hPotion2 = 2, mPotion1 = 2, mPotion2 = 2, pPotion1 = 2, pPotion2 = 2;
+	int p1Winner = 0, p2Winner = 0, p1Score = 0, p2Score = 0;
+	int	coin = 0, i, x, q, s1, pCounter1 = 0, pCounter2 = 0, timer = NULL;
+	
+	//inventory item menu
+	int	hPotion1 = 2, hPotion2 = 2, mPotion1 = 2, mPotion2 = 2, pPotion1 = 2, pPotion2 = 2;
 	
 	//variable arrays for player stats and boosts: 
 	//Boosts: 0=AttkBoost, 1=MagicBoost, 2=HealthBoost, 3=Hit%, 4=Critical%

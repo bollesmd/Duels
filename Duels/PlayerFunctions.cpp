@@ -1,5 +1,4 @@
-#include<iostream>
-#include<string>
+//Player specific functions: For processing actions taken by the characters//
 
 #include "stdafx.h"
 #include "functions.h"
@@ -7,7 +6,7 @@
 using namespace std;
 
 void playerStatus(double& p1H, double& p2H, double& p1M, double& p2M, double& p1S, double& p2S,
-	int& p1HP, int& p1MP, int& p1PP, int &p2HP, int& p2MP, int& p2PP, char pH)
+					int& p1HP, int& p1MP, int& p1PP, int &p2HP, int& p2MP, int& p2PP, char pH)
 {
 	switch (pH)
 	{
@@ -38,3 +37,4 @@ void playerStatus(double& p1H, double& p2H, double& p1M, double& p2M, double& p1
 	p2MP = 2;
 	p2PP = 2;
 }
+
