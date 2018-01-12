@@ -77,7 +77,7 @@ void main()
 			if (tolower(selection) == 'y')
 			{
 				//TODO: Add a verification that the file exists before trying to open it, or list available save files 
-				inFileA.open(pOne + ".txt");		//opens filename given by user 
+				inFileA.open("Saves/" + pOne + ".txt");		//opens filename given by user 
 				if (!inFileA)		//checks user's filename is invalid/available
 				{
 					cout << pOne << ": that saved character doesn't exist, starting from scratch!!" << endl;		//if file doesn't exist requests entry of new file from user
@@ -143,8 +143,8 @@ void main()
 
 			if (selection == 'y' || selection == 'Y')		//checks if entry is correct and runs load stats if yes
 			{
-				inFileB.open(pTwo + ".txt");
-
+				inFileB.open("Saves/" + pTwo + ".txt");
+				
 				if (!inFileB)
 					cout << "Player two that file doesn't exist, start from scratch!";		//if file not found, offers to create file
 				else
