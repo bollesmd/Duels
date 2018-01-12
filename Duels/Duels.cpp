@@ -46,8 +46,8 @@ void main()
 	ifstream inFileA, inFileB;
 	ofstream outFileA, outFileB;
 
-	string pClass[3] = { "Barbarian", "Mage", "Rogue" };
-	string Wpn[9] = { "Long Sword", "Axe", "Mace", "Wand", "Staff", "Enchanted Sword", "Dagger", "Bow", "Short Sword" };
+	string playerRace[3] = { "Barbarian", "Mage", "Rogue" };
+	string weaponType[9] = { "Long Sword", "Axe", "Mace", "Wand", "Staff", "Enchanted Sword", "Dagger", "Bow", "Short Sword" };
 	string armorType[3] = { "Light", "Heavy", "Magical" };
 	string statBoosts[5] = { "A - +1 Attack Damage", "B - +1 Magic Damage", "C - +5 Health Points", "D - +5 Hit Percentage", "E - +5 Critical Percentage" };
 	
@@ -281,7 +281,7 @@ void main()
 				if (selection == 'a')
 				{
 					//set player stats to barb basic
-					p1Class = pClass[0];
+					p1Class = playerRace[0];
 					p1Stats[0] = 60;		//physical hit%
 					p1Stats[1] = 20;		//attack damage
 					p1Stats[2] = 10;		//magic damage
@@ -301,7 +301,7 @@ void main()
 					{
 					case 'a':		//set player wpn stats to LongSword
 					{
-						p1Wpn = Wpn[0];		//sets player weapon
+						p1Wpn = weaponType[0];		//sets player weapon
 						p1Stats[0] += 0;		//physical hit%
 						p1Stats[1] += 5;		//attack damage
 						p1Stats[2] += 5;		//magic damage
@@ -309,7 +309,7 @@ void main()
 					break;
 					case 'b':		//set player wpn stats to Axe
 					{
-						p1Wpn = Wpn[1];
+						p1Wpn = weaponType[1];
 						p1Stats[0] -= 5;
 						p1Stats[1] += 10;
 						p1Stats[2] += 0;
@@ -317,7 +317,7 @@ void main()
 					break;
 					case 'c':		//set player wpn stats to Mace
 					{
-						p1Wpn = Wpn[2];
+						p1Wpn = weaponType[2];
 						p1Stats[0] += 5;
 						p1Stats[1] += 0;
 						p1Stats[2] += 10;
@@ -328,7 +328,7 @@ void main()
 				else if (selection == 'b')
 				{
 					//set player stats to mage basic
-					p1Class = pClass[1];
+					p1Class = playerRace[1];
 					p1Stats[0] = 50;		//physical hit%
 					p1Stats[1] = 10;		//attack damage
 					p1Stats[2] = 20;		//magic damage
@@ -347,7 +347,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Wand
-						p1Wpn = Wpn[3];
+						p1Wpn = weaponType[3];
 						p1Stats[0] += 10;		//physical hit%
 						p1Stats[1] -= 5;		//attack damage
 						p1Stats[2] += 10;		//magic damage
@@ -355,7 +355,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Staff
-						p1Wpn = Wpn[4];
+						p1Wpn = weaponType[4];
 						p1Stats[0] += 0;
 						p1Stats[1] += 0;
 						p1Stats[2] += 5;
@@ -363,7 +363,7 @@ void main()
 					else
 					{
 						//set player wpn stats to enchSword
-						p1Wpn = Wpn[5];
+						p1Wpn = weaponType[5];
 						p1Stats[0] -= 10;
 						p1Stats[1] += 5;
 						p1Stats[2] += 0;
@@ -372,7 +372,7 @@ void main()
 				else
 				{
 					//set player stats to rogue basic
-					p1Class = pClass[2];
+					p1Class = playerRace[2];
 					p1Stats[0] = 70;		//physical hit%
 					p1Stats[1] = 15;		//attack damage
 					p1Stats[2] = 15;		//magic damage
@@ -391,7 +391,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Dagger
-						p1Wpn = Wpn[6];
+						p1Wpn = weaponType[6];
 						p1Stats[0] += 10;		//physical hit%
 						p1Stats[1] -= 5;		//attack damage
 						p1Stats[2] += 10;		//magic damage
@@ -399,7 +399,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Bow
-						p1Wpn = Wpn[7];
+						p1Wpn = weaponType[7];
 						p1Stats[0] += 0;
 						p1Stats[1] += 0;
 						p1Stats[2] += 5;
@@ -407,7 +407,7 @@ void main()
 					else
 					{
 						//set player wpn stats to ShortSword
-						p1Wpn = Wpn[8];
+						p1Wpn = weaponType[8];
 						p1Stats[0] -= 10;
 						p1Stats[1] += 5;
 						p1Stats[2] += 0;
@@ -473,7 +473,7 @@ void main()
 				if (selection == 'a')
 				{
 					//set player stats to barb basic
-					p2Class = pClass[0];
+					p2Class = playerRace[0];
 					p2Stats[0] = 60;
 					p2Stats[1] = 20;
 					p2Stats[2] = 10;
@@ -492,7 +492,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to LongSword
-						p2Wpn = Wpn[0];
+						p2Wpn = weaponType[0];
 						p2Stats[0] += 0;
 						p2Stats[1] += 5;
 						p2Stats[2] += 5;
@@ -500,7 +500,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Axe
-						p2Wpn = Wpn[1];
+						p2Wpn = weaponType[1];
 						p2Stats[0] -= 5;
 						p2Stats[1] += 10;
 						p2Stats[2] += 0;
@@ -508,7 +508,7 @@ void main()
 					else
 					{
 						//set player wpn stats to Mace
-						p2Wpn = Wpn[2];
+						p2Wpn = weaponType[2];
 						p2Stats[0] += 5;
 						p2Stats[1] += 0;
 						p2Stats[2] += 10;
@@ -517,7 +517,7 @@ void main()
 				else if (selection == 'b')
 				{
 					//set player stats to mage basic
-					p2Class = pClass[1];
+					p2Class = playerRace[1];
 					p2Stats[0] = 50;
 					p2Stats[1] = 10;
 					p2Stats[2] = 20;
@@ -536,7 +536,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Wand
-						p2Wpn = Wpn[3];
+						p2Wpn = weaponType[3];
 						p2Stats[0] += 10;
 						p2Stats[1] -= 5;
 						p2Stats[2] += 10;
@@ -544,7 +544,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Staff
-						p2Wpn = Wpn[4];
+						p2Wpn = weaponType[4];
 						p2Stats[0] += 0;
 						p2Stats[1] += 0;
 						p2Stats[2] += 5;
@@ -552,7 +552,7 @@ void main()
 					else
 					{
 						//set player wpn stats to enchSword
-						p2Wpn = Wpn[5];
+						p2Wpn = weaponType[5];
 						p2Stats[0] -= 10;
 						p2Stats[1] += 5;
 						p2Stats[2] += 0;
@@ -561,7 +561,7 @@ void main()
 				else
 				{
 					//set player stats to rogue basic
-					p2Class = pClass[2];
+					p2Class = playerRace[2];
 					p2Stats[0] = 70;
 					p2Stats[1] = 15;
 					p2Stats[2] = 15;
@@ -580,7 +580,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Dagger
-						p2Wpn = Wpn[6];
+						p2Wpn = weaponType[6];
 						p2Stats[0] += 10;
 						p2Stats[1] -= 5;
 						p2Stats[2] += 10;
@@ -588,7 +588,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Bow
-						p2Wpn = Wpn[7];
+						p2Wpn = weaponType[7];
 						p2Stats[0] += 0;
 						p2Stats[1] += 0;
 						p2Stats[2] += 5;
@@ -596,7 +596,7 @@ void main()
 					else
 					{
 						//set player wpn stats to ShortSword
-						p2Wpn = Wpn[8];
+						p2Wpn = weaponType[8];
 						p2Stats[0] -= 10;
 						p2Stats[1] += 5;
 						p2Stats[2] += 0;
