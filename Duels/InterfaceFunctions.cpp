@@ -5,6 +5,26 @@
 
 using namespace std;
 
+//Draw Menu
+void DrawTitle(bool newGame)
+{
+	//draw game title header
+	cout << "=================================================" << endl
+		<< "=================================================" << endl
+		<< "==    DDDDD   UU  UU  EEEEEE  LL       SSSS    ==" << endl
+		<< "==    DD  DD  UU  UU  EE      LL      SS       ==" << endl
+		<< "==    DD  DD  UU  UU  EEEE    LL       SSS     ==" << endl
+		<< "==    DD  DD  UU  UU  EE      LL         SS    ==" << endl
+		<< "==    DDDDD    UUUU   EEEEEE  LLLLLL  SSSS     ==" << endl
+		<< "=================================================" << endl
+		<< "=================================================" << endl << endl;
+
+	if (newGame)
+	{
+		cout << "=======Welcome players! Let's get bloody!!=======" << endl << endl;
+	}
+}
+
 //Confirmation of player selections
 char selectCheck(char select, int s1)
 {

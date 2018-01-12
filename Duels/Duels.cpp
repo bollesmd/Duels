@@ -51,23 +51,13 @@ void main()
 	string armorType[3] = { "Light", "Heavy", "Magical" };
 	string statBoosts[5] = { "A - +1 Attack Damage", "B - +1 Magic Damage", "C - +5 Health Points", "D - +5 Hit Percentage", "E - +5 Critical Percentage" };
 	
-	//draw game title header
-	cout << "=================================================" << endl
-		<< "=================================================" << endl
-		<< "==    DDDDD   UU  UU  EEEEEE  LL       SSSS    ==" << endl
-		<< "==    DD  DD  UU  UU  EE      LL      SS       ==" << endl
-		<< "==    DD  DD  UU  UU  EEEE    LL       SSS     ==" << endl
-		<< "==    DD  DD  UU  UU  EE      LL         SS    ==" << endl
-		<< "==    DDDDD    UUUU   EEEEEE  LLLLLL  SSSS     ==" << endl
-		<< "=================================================" << endl
-		<< "=================================================" << endl << endl;
-	cout << "=======Welcome players! Let's get bloody!!=======" << endl << endl;
+	DrawTitle(true);
 
 	//Initialize player save files
 	while (p1Turn)		//player one enters character name and loads stats if available
 	{
 		cout << "Player one, do you have a saved character? (y) or (n) ";
-		cin >> selection;		//user inputs choice
+		cin >> selection;
 		cin.ignore(1000, '\n');
 		cout << endl;
 
