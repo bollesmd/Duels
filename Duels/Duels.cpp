@@ -10,21 +10,23 @@
 
 using namespace std;
 
-void main()		
+void main()
 {
-	//declaring player variables
+	#pragma region Global Variable Declarations
 	string pOne, pTwo, fileName, p1Class, p1Wpn, p1Armor, p2Class, p2Wpn, p2Armor;
 
 	int p1Winner = 0, p2Winner = 0, p1Score = 0, p2Score = 0;
-	int	coin = 0, i, x, q, s1, pCounter1 = 0, pCounter2 = 0, timer = NULL;
-	
+	int	coin = 0, i, x, q, s1, pCounter1 = 0, pCounter2 = 0;
+		
+	double timer = 0;
+
 	//inventory item menu
 	int	hPotion1 = 2, hPotion2 = 2, mPotion1 = 2, mPotion2 = 2, pPotion1 = 2, pPotion2 = 2;
-	
+
 	//variable arrays for player stats and boosts: 
 	//Boosts: 0=AttkBoost, 1=MagicBoost, 2=HealthBoost, 3=Hit%, 4=Critical%
-	int p1Boost[5] = { 0,0,0,0,0 };      
-	int p2Boost[5] = { 0,0,0,0,0 };  
+	int p1Boost[5] = { 0,0,0,0,0 };
+	int p2Boost[5] = { 0,0,0,0,0 };
 	bool p1StatBoosts[5] = { true, true, true, true, true };
 	bool p2StatBoosts[5] = { true, true, true, true, true };
 	//Stats: 0=Physical Hit%, 1=Attack Damage, 2=Magic Damage, 3=Special Damage, 4=Critical %, 5=PhysicalDefense, 6=MagicDefense, 7=total wins, 8=games played
@@ -32,14 +34,14 @@ void main()
 	double p2Stats[14] = { 0,0,0,0,0,0,0,0,0 };
 
 	double damage;
-			
+
 	//player stat variables
 	double p1Health, p1Special, p1Magic;
 	double p2Health, p2Special, p2Magic;
 
 	char playGame, selection, pH = 'z', saveChar;
-	bool game = true, charSelect = true, turns = true, p1Turn = true, p2Turn = true, pickHealth = true, 
-			play = true, p1Poison = false, p2Poison = false;
+	bool game = true, charSelect = true, turns = true, p1Turn = true, p2Turn = true, pickHealth = true,
+		play = true, p1Poison = false, p2Poison = false;
 	time_t start, end;
 
 	//fstream variables for load/save files
@@ -50,28 +52,32 @@ void main()
 	string weaponType[9] = { "Long Sword", "Axe", "Mace", "Wand", "Staff", "Enchanted Sword", "Dagger", "Bow", "Short Sword" };
 	string armorType[3] = { "Light", "Heavy", "Magical" };
 	string statBoosts[5] = { "A - +1 Attack Damage", "B - +1 Magic Damage", "C - +5 Health Points", "D - +5 Hit Percentage", "E - +5 Critical Percentage" };
-	
+	#pragma endregion
+
 	DrawTitle(true);
 
 	//Initialize player save files
-	while (p1Turn)		//player one enters character name and loads stats if available
+	//player one enters character name and loads stats if available
+	while (p1Turn)
 	{
 		cout << "Player one, do you have a saved character? (y) or (n) ";
 		cin >> selection;
 		cin.ignore(1000, '\n');
 		cout << endl;
 
-		if (selection == 'y' || selection == 'Y')		//check against user entry
+		//Get player's character name
+		if (tolower(selection) == 'y')
 		{
-			cout << "What's your character's name? ";		//requests player one's name
-			getline(cin, pOne);		//user enters name
-			cout << endl << "Please verify name: " << pOne << " is correct. (y) or (n) ";		//checks that name was input correctly
-			cin >> selection;		//user confirms name entry
+			cout << "What's your character's name? ";
+			getline(cin, pOne);
+			cout << endl << "Please verify name: " << pOne << " is correct. (y) or (n) ";
+			cin >> selection;
 			cin.ignore(1000, '\n');
 
-			if (selection == 'y' || selection == 'Y')		//if user enters yes name is correct
+			if (tolower(selection) == 'y')
 			{
-				inFileA.open(pOne + ".txt");		//opens filename given by user
+				//TODO: Add a verification that the file exists before trying to open it, or list available save files 
+				inFileA.open(pOne + ".txt");		//opens filename given by user 
 				if (!inFileA)		//checks user's filename is invalid/available
 				{
 					cout << pOne << ": that saved character doesn't exist, starting from scratch!!" << endl;		//if file doesn't exist requests entry of new file from user
@@ -86,7 +92,7 @@ void main()
 					{
 						inFileA >> p1Boost[i];
 					}
-					
+
 					for (i = 0; i < 9; i++)
 					{
 						inFileA >> p1Stats[i];
@@ -104,7 +110,7 @@ void main()
 		else
 		{
 			//if no character exists for player, start a new one
-			cout << "Please enter a new character name: ";		
+			cout << "Please enter a new character name: ";
 			getline(cin, pOne);
 			cout << "Please verify name: " << pOne << " is correct. (y) or (n) ";
 			cin >> selection;
@@ -140,14 +146,14 @@ void main()
 				inFileB.open(pTwo + ".txt");
 
 				if (!inFileB)
-					cout << "Player one that file doesn't exist, start from scratch!";		//if file not found, offers to create file
+					cout << "Player two that file doesn't exist, start from scratch!";		//if file not found, offers to create file
 				else
 				{
 					cout << "Thank you " << pTwo << ", loading player stats." << endl;		//if file found loads player's stats
-					for (int i = 0; i<5; i++)
+					for (int i = 0; i < 5; i++)
 						inFileB >> p2Boost[i];
 					//inFileB >> "\n";
-					for (i = 0; i<9; i++)
+					for (i = 0; i < 9; i++)
 						inFileB >> p2Stats[i];
 				}
 
@@ -191,7 +197,7 @@ void main()
 		}
 
 		//set who goes first
-		if (p1Winner == 1)		
+		if (p1Winner == 1)
 		{
 			cout << pOne << " goes first." << endl;
 			p1Turn = true;		//true if p1 turn
@@ -259,8 +265,8 @@ void main()
 		}
 
 		//Player health stat reset function
-		playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, hPotion1, mPotion1, pPotion1, 
-								hPotion2, mPotion2, pPotion2, pH);		
+		playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, hPotion1, mPotion1, pPotion1,
+			hPotion2, mPotion2, pPotion2, pH);
 
 		i = 0;
 
@@ -645,7 +651,7 @@ void main()
 			else
 			{
 				charSelect = false;
-				break; 
+				break;
 			}
 		}
 
@@ -654,14 +660,14 @@ void main()
 			playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, hPotion1, mPotion1, pPotion1, hPotion2, mPotion2, pPotion2, pH);		//function called to reset player status
 
 			//adds boosts to base stats for player one																																				//implement stat boosts for player 1
-			p1Health += p1Boost[2];		
+			p1Health += p1Boost[2];
 			p1Stats[0] += p1Boost[3];
 			p1Stats[1] += p1Boost[0];
 			p1Stats[2] += p1Boost[1];
 			p1Stats[4] += p1Boost[4];
 
 			//check that player's stat boosts and limits player's growth
-			if (p1Health > 250)		
+			if (p1Health > 250)
 			{
 				p1Health = 250;
 				p1StatBoosts[0] = false;
@@ -727,7 +733,7 @@ void main()
 					system("cls");
 					cout << pOne << " Status;" << endl
 						<< "Health: " << p1Health << " points" << endl		//outputs player 1 health
-						<< "Bar: ";  
+						<< "Bar: ";
 					i = 0;
 					while (i < p1Health)		//outputs visual health bar
 					{
@@ -847,7 +853,7 @@ void main()
 							{
 								damage = 0;		//sets damage to 0
 								q = 0;		//variable for number of hits set to 0
-								for (i = 0; i<3; i++)		//runs 3 times for a possible hit each run
+								for (i = 0; i < 3; i++)		//runs 3 times for a possible hit each run
 								{
 									srand(selection);		//sets random number for hits
 									x = rand() % 100 + 1;
@@ -857,7 +863,7 @@ void main()
 									p2Health -= damage;		//decrements player health
 									q++;		//increments hit counter
 								}
-								if (q>0)
+								if (q > 0)
 								{
 									cout << pOne << " uses Quick Hits" << endl;		//outputs how many times player hits
 									cout << q << " hits for " << damage << " damage" << endl;
@@ -1052,7 +1058,7 @@ void main()
 							{
 								q = 0;
 								cout << pTwo << " uses Quick Hits with ";
-								for (i = 0; i<3; i++)
+								for (i = 0; i < 3; i++)
 								{
 									srand(selection);
 									x = rand() % 100 + 1;
@@ -1146,7 +1152,7 @@ void main()
 				cout << pOne << " is the Winner! Ready for your perks!?" << endl << endl;
 
 				cout << "Select a stat boost:" << endl;		//offers a stat boost menu for player 1 if won
-				for (int q = 0; q<5; q++)
+				for (int q = 0; q < 5; q++)
 					if (p1StatBoosts[q])
 						cout << statBoosts[q] << endl;
 				cin >> selection;
@@ -1182,7 +1188,7 @@ void main()
 				cout << pTwo << " is the Winner! Ready for your perks!?" << endl << endl;
 
 				cout << "Select a stat boost:" << endl;
-				for (int q = 0; q<5; q++)
+				for (int q = 0; q < 5; q++)
 					if (p1StatBoosts[q])
 						cout << statBoosts[q] << endl;
 				cin >> selection;
@@ -1231,10 +1237,10 @@ void main()
 			{
 				outFileA.open(pOne + ".txt");
 				outFileA << pOne << " ";
-				for (i = 0; i<5; i++)
+				for (i = 0; i < 5; i++)
 					outFileA << p1Boost[i] << " ";
 				outFileA << "\n";
-				for (i = 0; i<9; i++)
+				for (i = 0; i < 9; i++)
 					outFileA << p1Stats[i] << " ";
 				outFileA.close();
 			}
@@ -1246,10 +1252,10 @@ void main()
 			{
 				outFileB.open(pTwo + ".txt");
 				outFileB << pTwo << " ";
-				for (i = 0; i<5; i++)
+				for (i = 0; i < 5; i++)
 					outFileB << p2Boost[i] << " ";
 				outFileB << "\n";
-				for (i = 0; i<9; i++)
+				for (i = 0; i < 9; i++)
 					outFileB << p2Stats[i] << " ";
 				outFileB.close();
 			}
