@@ -1,6 +1,9 @@
 //Michael Bolles
 //Created VS2010: 1/10/13 
 //Edited for VS1027: 1/1/18
+//Refactoring: Variable Naming Convention, Comments, Modularity and Methods
+	//to read easier for portfolio, while keeping logic intact 
+	//so as not to disrupt integrity of the original assignment.
 
 //Final Project CSPG106: My first student C++ programming project 
 // Duels.cpp : Defines the entry point for the console application.
@@ -16,8 +19,8 @@ void main()
 	string pOne, pTwo, fileName, p1Class, p1Wpn, p1Armor, p2Class, p2Wpn, p2Armor;
 
 	int p1Winner = 0, p2Winner = 0, p1Score = 0, p2Score = 0;
-	int	coin = 0, i, x, q, s1, pCounter1 = 0, pCounter2 = 0;
-		
+	int	coin = 0, i, x, q, pCounter1 = 0, pCounter2 = 0;
+
 	double timer = 0;
 
 	//inventory item menu
@@ -60,12 +63,14 @@ void main()
 	//player one enters character name and loads stats if available
 	while (p1Turn)
 	{
+		DrawTitle(false);
 		cout << "Player one, do you have a saved character? (y) or (n) ";
 		cin >> selection;
 		cin.ignore(1000, '\n');
 		cout << endl;
 
 		//Get player's character name
+		//TODO: Add a verification that the file exists before trying to open it, or list available save files 
 		if (tolower(selection) == 'y')
 		{
 			cout << "What's your character's name? ";
@@ -76,14 +81,17 @@ void main()
 
 			if (tolower(selection) == 'y')
 			{
-				//TODO: Add a verification that the file exists before trying to open it, or list available save files 
-				inFileA.open("Saves/" + pOne + ".txt");		//opens filename given by user 
-				if (!inFileA)		//checks user's filename is invalid/available
+				inFileA.open("Saves/" + pOne + ".txt");	
+
+				//Confirm Player save file exists
+				if (!inFileA)
 				{
-					cout << pOne << ": that saved character doesn't exist, starting from scratch!!" << endl;		//if file doesn't exist requests entry of new file from user
+					// if file doesn't exist request entry of new file from user
+					cout << pOne << ": That saved character doesn't exist, starting from scratch!!" << endl;
 				}
-				else		//runs if user enters an existing filename
+				else
 				{
+					//TODO: Load player's class and weapons
 					cout << "Thank you " << pOne << ", loading player stats." << endl;		//displays message confirming file load
 					inFileA >> pOne;
 
@@ -128,6 +136,7 @@ void main()
 
 	while (p2Turn)		//player two enters name and loads stats if available
 	{
+		DrawTitle(false);
 		cout << "Player two, do you have a saved character? (y) or (n) ";
 		cin >> selection;
 		cin.ignore(1000, '\n');
@@ -182,17 +191,22 @@ void main()
 		}
 	}
 
-	while (game)		//game loop
+	//Enter primary game loop
+	while (game)		
 	{
-		while (pickHealth)		//health selection loop runs only once a session to determine player starting health unless otherwise indicated at end of game
+		//health selection loop runs only once a session to determine player starting health unless 
+			//otherwise indicated at end of game
+		while (pickHealth)
 		{
+			DrawTitle(false);
+
 			cout << "Select Player Health Settings." << endl		//User selects player health level
 				<< "A - Low: 50%" << endl << "B - Normal: 100%" << endl << "C - High: 250%" << endl << "Selection: ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
-			s1 = 1;
-			selection = selectCheck(selection, s1);		//check selection function
-			pH = selection;		//sets variable to selection for later use
+
+			pH = selection = ValidateUserSelection(selection, "ABC");
+			
 			pickHealth = false;		//stops loop unless user requests new entry of health settings
 		}
 
@@ -281,8 +295,8 @@ void main()
 				cin >> selection;
 				cin.ignore(1000, '\n');
 				cout << endl;
-				s1 = 1;
-				selectCheck(selection, s1);
+
+				selection = ValidateUserSelection(selection, "ABC");
 
 				if (selection == 'a')
 				{
@@ -301,7 +315,8 @@ void main()
 					cin >> selection;
 					cin.ignore(1000, '\n');
 					cout << endl;
-					selectCheck(selection, s1);		//check selections function
+
+					selection = ValidateUserSelection(selection, "ABC");		//check selections function
 
 					switch (selection)
 					{
@@ -348,7 +363,7 @@ void main()
 					cin >> selection;
 					cin.ignore(1000, '\n');
 					cout << endl;
-					selectCheck(selection, s1);		//selection check function
+					selection = ValidateUserSelection(selection, "ABC");
 
 					if (selection == 'a')
 					{
@@ -392,7 +407,7 @@ void main()
 					cin >> selection;
 					cin.ignore(1000, '\n');
 					cout << endl;
-					selectCheck(selection, s1);		//selection check function
+					selection = ValidateUserSelection(selection, "ABC");
 
 					if (selection == 'a')
 					{
@@ -426,7 +441,7 @@ void main()
 				cin >> selection;
 				cin.ignore(1000, '\n');
 				cout << endl;
-				selectCheck(selection, s1);		//selection check function
+				selection = ValidateUserSelection(selection, "ABC");
 
 				if (selection == 'a')
 				{
@@ -473,8 +488,8 @@ void main()
 				cin >> selection;
 				cin.ignore(1000, '\n');
 				cout << endl;
-				s1 = 1;
-				selectCheck(selection, s1);		//calls select check function
+				
+				selection = ValidateUserSelection(selection, "ABC");
 
 				if (selection == 'a')
 				{
@@ -493,7 +508,7 @@ void main()
 					cin >> selection;
 					cin.ignore(1000, '\n');
 					cout << endl;
-					selectCheck(selection, s1);		//calls select check function
+					selection = ValidateUserSelection(selection, "ABC");
 
 					if (selection == 'a')
 					{
@@ -537,7 +552,7 @@ void main()
 					cin >> selection;
 					cin.ignore(1000, '\n');
 					cout << endl;
-					selectCheck(selection, s1);		//calls select check function
+					selection = ValidateUserSelection(selection, "ABC");
 
 					if (selection == 'a')
 					{
@@ -581,7 +596,7 @@ void main()
 					cin >> selection;
 					cin.ignore(1000, '\n');
 					cout << endl;
-					selectCheck(selection, s1);		//calls select check function
+					selection = ValidateUserSelection(selection, "ABC");
 
 					if (selection == 'a')
 					{
@@ -616,7 +631,7 @@ void main()
 				cin >> selection;
 				cin.ignore(1000, '\n');
 				cout << endl;
-				selectCheck(selection, s1);		//calls select check function
+				selection = ValidateUserSelection(selection, "ABC");
 
 				if (selection == 'a')
 				{
@@ -779,11 +794,11 @@ void main()
 					cin.ignore(1000, '\n');
 					cout << endl;
 
-					s1 = 2;
-					selectCheck(selection, s1);		//calls select check function
+					selection = ValidateUserSelection(selection, "ABCI");
 
-					if (selection == 'a')		//attack method
+					if (selection == 'a')
 					{
+						//attack
 						timer = difftime(end, start);
 						srand(timer);		//sets random number for attack hit%
 						x = rand() % 100 + 1;
@@ -811,8 +826,9 @@ void main()
 						else
 							cout << pOne << " misses." << endl;		//outputs miss if random number outside of hit% range
 					}
-					else if (selection == 'b')		//Magic method
+					else if (selection == 'b')
 					{
+						//Magic
 						if (p1Magic >= 10)
 						{
 							damage = p1Stats[2];
@@ -824,7 +840,7 @@ void main()
 						else
 							cout << pOne << " tries to use magic but doesn't have enough Mana." << endl;		//outputs message if player doesn't have enough mana and ends turn
 					}
-					else if (selection == 'c')		//Special method
+					else if (selection == 'c')
 					{
 						//Special
 						if (p1Special >= 25)
@@ -884,11 +900,12 @@ void main()
 						cin >> selection;
 						cin.ignore(1000, '\n');
 						cout << endl;
-						s1 = 1;
-						selectCheck(selection, s1);		//calls select check function
 
-						if (selection == 'a')		//runs health potion method
+						selection = ValidateUserSelection(selection, "ABC");
+
+						if (selection == 'a')
 						{
+							//health potion
 							if (hPotion1 > 0)
 							{
 								cout << pOne << " uses health potion. +25HP" << endl;
@@ -898,8 +915,9 @@ void main()
 							else
 								cout << "Not enough health potions. " << pOne << " looses turn." << endl;
 						}
-						else if (selection == 'b')		//runs mana potion method
+						else if (selection == 'b')
 						{
+							//mana potion
 							if (mPotion1 > 0)
 							{
 								p1Magic += 25;
@@ -908,8 +926,9 @@ void main()
 							else
 								cout << "Not enough mana potions. " << pOne << " looses turn." << endl;
 						}
-						else		//runs poison method
+						else
 						{
+							//poison
 							if (pPotion1 > 0)
 							{
 								cout << pOne << " uses poison." << endl;
@@ -986,17 +1005,16 @@ void main()
 					cin.ignore(1000, '\n');
 					cout << endl;
 
-					s1 = 2;
-					selectCheck(selection, s1);		//calls select check function
+					selection = ValidateUserSelection(selection, "ABCI");
 
-					if (selection == 'a')		//attack function
+					if (selection == 'a')
 					{
+						//attack
 						timer = difftime(end, start);
 						srand(timer);
 						x = rand() % 100 + 1;
 
-
-						if (x <= p2Stats[0])		//checks hit percentage
+						if (x <= p2Stats[0])		//check hit percentage
 						{
 							if (x <= 1)		//checks if player misses
 							{
@@ -1086,11 +1104,12 @@ void main()
 						cin >> selection;
 						cin.ignore(1000, '\n');
 						cout << endl;
-						s1 = 1;
-						selectCheck(selection, s1);		//calls select check function
 
-						if (selection == 'a')		//health potion method
+						selection = ValidateUserSelection(selection, "ABC");
+
+						if (selection == 'a')
 						{
+							//health potion
 							if (hPotion2 > 0)
 							{
 								cout << pTwo << " uses health potion. +25HP" << endl;
@@ -1100,8 +1119,9 @@ void main()
 							else
 								cout << "Not enough health potions." << endl;
 						}
-						else if (selection == 'b')		//mana potion method
+						else if (selection == 'b')
 						{
+							//mana potion
 							if (mPotion2 > 0)
 							{
 								p2Magic += 25;
@@ -1110,8 +1130,9 @@ void main()
 							else
 								cout << "Not enough mana potions." << endl;
 						}
-						else		//poison potion method
+						else
 						{
+							//poison potion
 							if (pPotion2 > 0)
 							{
 								cout << pTwo << " uses poison." << endl;
@@ -1157,8 +1178,8 @@ void main()
 						cout << statBoosts[q] << endl;
 				cin >> selection;
 				cin.ignore(1000, '\n');
-				s1 = 3;
-				selectCheck(selection, s1);		//calls selection check function
+
+				selection = ValidateUserSelection(selection, "ABCDE");
 
 				switch (selection)		//implements stat boost based on selection
 				{
@@ -1193,8 +1214,8 @@ void main()
 						cout << statBoosts[q] << endl;
 				cin >> selection;
 				cin.ignore(1000, '\n');
-				s1 = 3;
-				selectCheck(selection, s1);
+
+				selection = ValidateUserSelection(selection, "ABCDE");
 
 				switch (selection)
 				{
