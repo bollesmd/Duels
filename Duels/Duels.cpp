@@ -16,15 +16,21 @@ using namespace std;
 void main()
 {
 	#pragma region Global Variable Declarations
-	string pOne, pTwo, fileName, p1Class, p1Wpn, p1Armor, p2Class, p2Wpn, p2Armor;
+	string pOneName, pTwoName;
+	string p1Class, p1Weapon, p1Armor;
+	string p2Class, p2Weapon, p2Armor;
 
-	int p1Winner = 0, p2Winner = 0, p1Score = 0, p2Score = 0;
-	int	coin = 0, i, x, q, pCounter1 = 0, pCounter2 = 0;
-
-	double timer = 0;
+	int p1Score = 0, p1WinCount = 0, pCounter1 = 0;
+	int p2Score = 0, p2WinCount = 0, pCounter2 = 0;
 
 	//inventory item menu
-	int	hPotion1 = 2, hPotion2 = 2, mPotion1 = 2, mPotion2 = 2, pPotion1 = 2, pPotion2 = 2;
+	int	p1HealthPotion = 2, p1ManaPotion = 2, p1PowerPotion = 2;
+	int p2HealthPotion = 2, p2ManaPotion = 2, p2PowerPotion = 2;
+
+	//TODO: rename nondescript variables
+	int	coin = 0, i, x, q;
+
+	double timer = 0;
 
 	//variable arrays for player stats and boosts: 
 	//Boosts: 0=AttkBoost, 1=MagicBoost, 2=HealthBoost, 3=Hit%, 4=Critical%
@@ -74,26 +80,26 @@ void main()
 		if (tolower(selection) == 'y')
 		{
 			cout << "What's your character's name? ";
-			getline(cin, pOne);
-			cout << endl << "Please verify name: " << pOne << " is correct. (y) or (n) ";
+			getline(cin, pOneName);
+			cout << endl << "Please verify name: " << pOneName << " is correct. (y) or (n) ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
 
 			if (tolower(selection) == 'y')
 			{
-				inFileA.open("Saves/" + pOne + ".txt");	
+				inFileA.open("Saves/" + pOneName + ".txt");	
 
 				//Confirm Player save file exists
 				if (!inFileA)
 				{
 					// if file doesn't exist request entry of new file from user
-					cout << pOne << ": That saved character doesn't exist, starting from scratch!!" << endl;
+					cout << pOneName << ": That saved character doesn't exist, starting from scratch!!" << endl;
 				}
 				else
 				{
 					//TODO: Load player's class and weapons
-					cout << "Thank you " << pOne << ", loading player stats." << endl;		//displays message confirming file load
-					inFileA >> pOne;
+					cout << "Thank you " << pOneName << ", loading player stats." << endl;		//displays message confirming file load
+					inFileA >> pOneName;
 
 					//load player stats into Player Boost array
 					for (int i = 0; i < 5; i++)
@@ -101,7 +107,7 @@ void main()
 						inFileA >> p1Boost[i];
 					}
 
-					for (i = 0; i < 9; i++)
+					for (int i = 0; i < 9; i++)
 					{
 						inFileA >> p1Stats[i];
 					}
@@ -119,14 +125,14 @@ void main()
 		{
 			//if no character exists for player, start a new one
 			cout << "Please enter a new character name: ";
-			getline(cin, pOne);
-			cout << "Please verify name: " << pOne << " is correct. (y) or (n) ";
+			getline(cin, pOneName);
+			cout << "Please verify name: " << pOneName << " is correct. (y) or (n) ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
 
 			if (selection == 'y' || selection == 'Y')
 			{
-				outFileA.open(pOne + ".txt");		//creates save file for player
+				outFileA.open(pOneName + ".txt");		//creates save file for player
 				outFileA.close();
 				p1Turn = false;
 				system("cls");
@@ -145,24 +151,24 @@ void main()
 		if (selection == 'y' || selection == 'Y')
 		{
 			cout << "What's your character's name? ";		//user enters character name
-			getline(cin, pTwo);
-			cout << endl << "Please verify name: " << pTwo << " is correct. (y) or (n) ";
+			getline(cin, pTwoName);
+			cout << endl << "Please verify name: " << pTwoName << " is correct. (y) or (n) ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
 
 			if (selection == 'y' || selection == 'Y')		//checks if entry is correct and runs load stats if yes
 			{
-				inFileB.open("Saves/" + pTwo + ".txt");
+				inFileB.open("Saves/" + pTwoName + ".txt");
 				
 				if (!inFileB)
 					cout << "Player two that file doesn't exist, start from scratch!";		//if file not found, offers to create file
 				else
 				{
-					cout << "Thank you " << pTwo << ", loading player stats." << endl;		//if file found loads player's stats
+					cout << "Thank you " << pTwoName << ", loading player stats." << endl;		//if file found loads player's stats
 					for (int i = 0; i < 5; i++)
 						inFileB >> p2Boost[i];
 					//inFileB >> "\n";
-					for (i = 0; i < 9; i++)
+					for (int i = 0; i < 9; i++)
 						inFileB >> p2Stats[i];
 				}
 
@@ -177,13 +183,13 @@ void main()
 		else
 		{
 			cout << "Please enter a new character name: ";		//if no character exists for player, starts new one
-			getline(cin, pTwo);
-			cout << "Please verify name: " << pTwo << " is correct. (y) or (n) ";
+			getline(cin, pTwoName);
+			cout << "Please verify name: " << pTwoName << " is correct. (y) or (n) ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
 			if (selection == 'y' || selection == 'Y')
 			{
-				outFileB.open(pTwo + ".txt");		//creates save file for player
+				outFileB.open(pTwoName + ".txt");		//creates save file for player
 				outFileB.close();
 				p2Turn = false;
 				system("cls");
@@ -211,17 +217,17 @@ void main()
 		}
 
 		//set who goes first
-		if (p1Winner == 1)
+		if (p1WinCount == 1)
 		{
-			cout << pOne << " goes first." << endl;
+			cout << pOneName << " goes first." << endl;
 			p1Turn = true;		//true if p1 turn
-			p1Winner = 0;
+			p1WinCount = 0;
 		}
-		else if (p2Winner == 1)
+		else if (p2WinCount == 1)
 		{
-			cout << pTwo << " goes first." << endl;
+			cout << pTwoName << " goes first." << endl;
 			p2Turn = true;		//true if p2 turn
-			p2Winner = 0;
+			p2WinCount = 0;
 		}
 		else		//checks who goes first and runs if there was no winner
 		{
@@ -279,8 +285,8 @@ void main()
 		}
 
 		//Player health stat reset function
-		playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, hPotion1, mPotion1, pPotion1,
-			hPotion2, mPotion2, pPotion2, pH);
+		playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, p1HealthPotion, p1ManaPotion, p1PowerPotion,
+			p2HealthPotion, p2ManaPotion, p2PowerPotion, pH);
 
 		i = 0;
 
@@ -288,7 +294,7 @@ void main()
 		{
 			while (p1Turn)		//sets player one stat bases
 			{
-				cout << pOne << " pick your character:" << endl;
+				cout << pOneName << " pick your character:" << endl;
 				cout << "A - Barbarian" << endl
 					<< "B - Mage" << endl
 					<< "C - Rogue" << endl << "selection: ";
@@ -308,7 +314,7 @@ void main()
 					p1Stats[3] = 25;		//special damage
 					p1Stats[4] = 20;		//critical hit%
 
-					cout << pOne << " pick your weapon:" << endl		//displays menu for weapon choice
+					cout << pOneName << " pick your weapon:" << endl		//displays menu for weapon choice
 						<< "A - Long Sword" << endl
 						<< "B - Axe" << endl
 						<< "C - Mace" << endl;
@@ -322,7 +328,7 @@ void main()
 					{
 					case 'a':		//set player wpn stats to LongSword
 					{
-						p1Wpn = weaponType[0];		//sets player weapon
+						p1Weapon = weaponType[0];		//sets player weapon
 						p1Stats[0] += 0;		//physical hit%
 						p1Stats[1] += 5;		//attack damage
 						p1Stats[2] += 5;		//magic damage
@@ -330,7 +336,7 @@ void main()
 					break;
 					case 'b':		//set player wpn stats to Axe
 					{
-						p1Wpn = weaponType[1];
+						p1Weapon = weaponType[1];
 						p1Stats[0] -= 5;
 						p1Stats[1] += 10;
 						p1Stats[2] += 0;
@@ -338,7 +344,7 @@ void main()
 					break;
 					case 'c':		//set player wpn stats to Mace
 					{
-						p1Wpn = weaponType[2];
+						p1Weapon = weaponType[2];
 						p1Stats[0] += 5;
 						p1Stats[1] += 0;
 						p1Stats[2] += 10;
@@ -356,7 +362,7 @@ void main()
 					p1Stats[3] = 25;		//special damage
 					p1Stats[4] = 20;		//critical hit%
 
-					cout << pOne << " pick your weapon:" << endl		//displays mage's weapon selection
+					cout << pOneName << " pick your weapon:" << endl		//displays mage's weapon selection
 						<< "A - Wand" << endl
 						<< "B - Staff" << endl
 						<< "C - Enchanted Sword" << endl;
@@ -368,7 +374,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Wand
-						p1Wpn = weaponType[3];
+						p1Weapon = weaponType[3];
 						p1Stats[0] += 10;		//physical hit%
 						p1Stats[1] -= 5;		//attack damage
 						p1Stats[2] += 10;		//magic damage
@@ -376,7 +382,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Staff
-						p1Wpn = weaponType[4];
+						p1Weapon = weaponType[4];
 						p1Stats[0] += 0;
 						p1Stats[1] += 0;
 						p1Stats[2] += 5;
@@ -384,7 +390,7 @@ void main()
 					else
 					{
 						//set player wpn stats to enchSword
-						p1Wpn = weaponType[5];
+						p1Weapon = weaponType[5];
 						p1Stats[0] -= 10;
 						p1Stats[1] += 5;
 						p1Stats[2] += 0;
@@ -400,7 +406,7 @@ void main()
 					p1Stats[3] = 15;		//special damage
 					p1Stats[4] = 20;		//critical hit%
 
-					cout << pOne << " pick your weapon:" << endl		//requests input of weapon
+					cout << pOneName << " pick your weapon:" << endl		//requests input of weapon
 						<< "A - Dagger" << endl
 						<< "B - Bow" << endl
 						<< "C - Short Sword" << endl;
@@ -412,7 +418,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Dagger
-						p1Wpn = weaponType[6];
+						p1Weapon = weaponType[6];
 						p1Stats[0] += 10;		//physical hit%
 						p1Stats[1] -= 5;		//attack damage
 						p1Stats[2] += 10;		//magic damage
@@ -420,7 +426,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Bow
-						p1Wpn = weaponType[7];
+						p1Weapon = weaponType[7];
 						p1Stats[0] += 0;
 						p1Stats[1] += 0;
 						p1Stats[2] += 5;
@@ -428,13 +434,13 @@ void main()
 					else
 					{
 						//set player wpn stats to ShortSword
-						p1Wpn = weaponType[8];
+						p1Weapon = weaponType[8];
 						p1Stats[0] -= 10;
 						p1Stats[1] += 5;
 						p1Stats[2] += 0;
 					}
 				}
-				cout << pOne << " pick your armor type:" << endl		//displays menu and requests input of armor type
+				cout << pOneName << " pick your armor type:" << endl		//displays menu and requests input of armor type
 					<< "A - Light" << endl
 					<< "B - Heavy" << endl
 					<< "C - Magical" << endl;
@@ -481,7 +487,7 @@ void main()
 
 			while (p2Turn)		//sets player two's stat bases
 			{
-				cout << pTwo << " pick your character:" << endl;
+				cout << pTwoName << " pick your character:" << endl;
 				cout << "A - Barbarian" << endl
 					<< "B - Mage" << endl
 					<< "C - Rogue" << endl << "selection: ";
@@ -501,7 +507,7 @@ void main()
 					p2Stats[3] = 25;
 					p2Stats[4] = 20;
 
-					cout << pTwo << " pick your weapon:" << endl
+					cout << pTwoName << " pick your weapon:" << endl
 						<< "A - Long Sword" << endl
 						<< "B - Axe" << endl
 						<< "C - Mace" << endl;
@@ -513,7 +519,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to LongSword
-						p2Wpn = weaponType[0];
+						p2Weapon = weaponType[0];
 						p2Stats[0] += 0;
 						p2Stats[1] += 5;
 						p2Stats[2] += 5;
@@ -521,7 +527,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Axe
-						p2Wpn = weaponType[1];
+						p2Weapon = weaponType[1];
 						p2Stats[0] -= 5;
 						p2Stats[1] += 10;
 						p2Stats[2] += 0;
@@ -529,7 +535,7 @@ void main()
 					else
 					{
 						//set player wpn stats to Mace
-						p2Wpn = weaponType[2];
+						p2Weapon = weaponType[2];
 						p2Stats[0] += 5;
 						p2Stats[1] += 0;
 						p2Stats[2] += 10;
@@ -545,7 +551,7 @@ void main()
 					p2Stats[3] = 25;
 					p2Stats[4] = 20;
 
-					cout << pTwo << " pick your weapon:" << endl
+					cout << pTwoName << " pick your weapon:" << endl
 						<< "A - Wand" << endl
 						<< "B - Staff" << endl
 						<< "C - Enchanted Sword" << endl;
@@ -557,7 +563,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Wand
-						p2Wpn = weaponType[3];
+						p2Weapon = weaponType[3];
 						p2Stats[0] += 10;
 						p2Stats[1] -= 5;
 						p2Stats[2] += 10;
@@ -565,7 +571,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Staff
-						p2Wpn = weaponType[4];
+						p2Weapon = weaponType[4];
 						p2Stats[0] += 0;
 						p2Stats[1] += 0;
 						p2Stats[2] += 5;
@@ -573,7 +579,7 @@ void main()
 					else
 					{
 						//set player wpn stats to enchSword
-						p2Wpn = weaponType[5];
+						p2Weapon = weaponType[5];
 						p2Stats[0] -= 10;
 						p2Stats[1] += 5;
 						p2Stats[2] += 0;
@@ -589,7 +595,7 @@ void main()
 					p2Stats[3] = 15;
 					p2Stats[4] = 20;
 
-					cout << pTwo << " pick your weapon:" << endl
+					cout << pTwoName << " pick your weapon:" << endl
 						<< "A - Dagger" << endl
 						<< "B - Bow" << endl
 						<< "C - Short Sword" << endl;
@@ -601,7 +607,7 @@ void main()
 					if (selection == 'a')
 					{
 						//set player wpn stats to Dagger
-						p2Wpn = weaponType[6];
+						p2Weapon = weaponType[6];
 						p2Stats[0] += 10;
 						p2Stats[1] -= 5;
 						p2Stats[2] += 10;
@@ -609,7 +615,7 @@ void main()
 					else if (selection == 'b')
 					{
 						//set player wpn stats to Bow
-						p2Wpn = weaponType[7];
+						p2Weapon = weaponType[7];
 						p2Stats[0] += 0;
 						p2Stats[1] += 0;
 						p2Stats[2] += 5;
@@ -617,14 +623,14 @@ void main()
 					else
 					{
 						//set player wpn stats to ShortSword
-						p2Wpn = weaponType[8];
+						p2Weapon = weaponType[8];
 						p2Stats[0] -= 10;
 						p2Stats[1] += 5;
 						p2Stats[2] += 0;
 					}
 				}
 
-				cout << pTwo << " pick your armor type:" << endl
+				cout << pTwoName << " pick your armor type:" << endl
 					<< "A - Light" << endl
 					<< "B - Heavy" << endl
 					<< "C - Magical" << endl;
@@ -672,7 +678,7 @@ void main()
 
 		while (play)
 		{
-			playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, hPotion1, mPotion1, pPotion1, hPotion2, mPotion2, pPotion2, pH);		//function called to reset player status
+			playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, p1HealthPotion, p1ManaPotion, p1PowerPotion, p2HealthPotion, p2ManaPotion, p2PowerPotion, pH);		//function called to reset player status
 
 			//adds boosts to base stats for player one																																				//implement stat boosts for player 1
 			p1Health += p1Boost[2];
@@ -745,21 +751,24 @@ void main()
 			{
 				while (p1Turn && p1Health > 0)		//Player one's turn 
 				{
-					system("cls");
-					cout << pOne << " Status;" << endl
-						<< "Health: " << p1Health << " points" << endl		//outputs player 1 health
-						<< "Bar: ";
-					i = 0;
-					while (i < p1Health)		//outputs visual health bar
+					DrawTitle(false);
+
+					cout << pOneName << " Status;" << endl;
+					cout << "Health: " << p1Health << " points" << endl;
+						
+					//TODO: Output health bars as a percentage instead
+					cout << "Bar: ";
+					for(int i = 0; i < p1Health; i++)
 					{
+						//output visual health bar
 						cout << "X";
-						i++;
 					}
+
 					cout << endl;
 					cout << "Mana: " << p1Magic << " points" << endl;		//outputs mana
 					cout << "Stamina: " << p1Special << " points" << endl << endl;		//outputs stamina
 
-					cout << pTwo << " Health: " << p2Health << " points" << endl		//outputs opponents health bar
+					cout << pTwoName << " Health: " << p2Health << " points" << endl		//outputs opponents health bar
 						<< "Bar: ";
 					i = 0;
 					while (i < p2Health)
@@ -771,7 +780,7 @@ void main()
 
 					if (p1Poison)		//checks and runs poison damage if player is poisoned
 					{
-						cout << pOne << " takes poison damage.";
+						cout << pOneName << " takes poison damage.";
 						p1Health -= 5;
 						pCounter1++;		//increments poison counter and stops poison state when 5 is reached
 						if (pCounter1 == 5)
@@ -783,7 +792,7 @@ void main()
 							break;
 					}
 
-					cout << pOne << " select your move." << endl;		//player choose between options to attack, defend, spAttk or use item on opponent
+					cout << pOneName << " select your move." << endl;		//player choose between options to attack, defend, spAttk or use item on opponent
 					cout << "A - Attack" << endl;
 					cout << "B - Magic" << endl;
 					cout << "C - Special" << endl;
@@ -808,7 +817,7 @@ void main()
 							if (x <= 5)		//runs if random number is 5 or less
 							{
 								cout << "O.o Critical Miss o.O" << endl		//outputs critical miss message
-									<< pOne << "takes 5 damage." << endl;
+									<< pOneName << "takes 5 damage." << endl;
 								p1Health -= 5;
 							}
 							else if (x <= p1Stats[4] && x > 5)		//checks for critical damage
@@ -820,11 +829,11 @@ void main()
 								damage = p1Stats[1];		//sets damage equal to player 1's stats
 
 							damage = static_cast<int> (damage - (damage * p2Stats[5] / 100));		//sets damage to a whole number based on atatck damage algorithm
-							cout << pOne << " hits for " << fixed << setprecision(0) << damage << " points." << endl;
+							cout << pOneName << " hits for " << fixed << setprecision(0) << damage << " points." << endl;
 							p2Health -= damage;		//decrements player health based on damage
 						}
 						else
-							cout << pOne << " misses." << endl;		//outputs miss if random number outside of hit% range
+							cout << pOneName << " misses." << endl;		//outputs miss if random number outside of hit% range
 					}
 					else if (selection == 'b')
 					{
@@ -833,12 +842,12 @@ void main()
 						{
 							damage = p1Stats[2];
 							damage = static_cast<int> (damage - (damage * p2Stats[6] / 100));		//sets damage to a whole number based on magic damage algorithm
-							cout << pOne << " uses magic for " << damage << " points of damage." << endl;
+							cout << pOneName << " uses magic for " << damage << " points of damage." << endl;
 							p1Magic -= 10;		//decrements player mana
 							p2Health -= damage;		//decrements player health based on damage
 						}
 						else
-							cout << pOne << " tries to use magic but doesn't have enough Mana." << endl;		//outputs message if player doesn't have enough mana and ends turn
+							cout << pOneName << " tries to use magic but doesn't have enough Mana." << endl;		//outputs message if player doesn't have enough mana and ends turn
 					}
 					else if (selection == 'c')
 					{
@@ -854,7 +863,7 @@ void main()
 
 								if (x <= 75)		//special attack hit% set to 75
 								{
-									cout << pOne << " uses Bash." << endl;
+									cout << pOneName << " uses Bash." << endl;
 									damage = static_cast<int> (p1Stats[3] - (p1Stats[3] * p2Stats[6] / 100));		//special attack damage algorithm
 									p2Health = p2Health - damage;		//decrements player health based on damage
 								}
@@ -862,7 +871,7 @@ void main()
 							else if (p1Class == "Mage")		//special for mage
 							{
 
-								cout << pOne << " uses Healing Magic." << endl;		//increments player health by 25
+								cout << pOneName << " uses Healing Magic." << endl;		//increments player health by 25
 								p1Health += 25;
 							}
 							else		//special for rogue
@@ -881,22 +890,22 @@ void main()
 								}
 								if (q > 0)
 								{
-									cout << pOne << " uses Quick Hits" << endl;		//outputs how many times player hits
+									cout << pOneName << " uses Quick Hits" << endl;		//outputs how many times player hits
 									cout << q << " hits for " << damage << " damage" << endl;
 								}
 								else
-									cout << pOne << " uses Quick Hit and misses." << endl;		//outputs miss message
+									cout << pOneName << " uses Quick Hit and misses." << endl;		//outputs miss message
 							}
 						}
 						else
-							cout << pOne << " tries to use special but doesn't have enough Stamina." << endl;		//outputs message stating player doesn't have enough stamina and ends turn
+							cout << pOneName << " tries to use special but doesn't have enough Stamina." << endl;		//outputs message stating player doesn't have enough stamina and ends turn
 					}
 					else if (selection == 'i')		//Item Menu method
 					{
 						cout << "Items:" << endl		//outputs menu for items
-							<< "A - Health Potion: " << hPotion1 << endl
-							<< "B - Mana Potion: " << mPotion1 << endl
-							<< "C - Poison: " << pPotion1 << endl;
+							<< "A - Health Potion: " << p1HealthPotion << endl
+							<< "B - Mana Potion: " << p1ManaPotion << endl
+							<< "C - Poison: " << p1PowerPotion << endl;
 						cin >> selection;
 						cin.ignore(1000, '\n');
 						cout << endl;
@@ -906,37 +915,37 @@ void main()
 						if (selection == 'a')
 						{
 							//health potion
-							if (hPotion1 > 0)
+							if (p1HealthPotion > 0)
 							{
-								cout << pOne << " uses health potion. +25HP" << endl;
+								cout << pOneName << " uses health potion. +25HP" << endl;
 								p1Health += 25;
-								hPotion1--;
+								p1HealthPotion--;
 							}
 							else
-								cout << "Not enough health potions. " << pOne << " looses turn." << endl;
+								cout << "Not enough health potions. " << pOneName << " looses turn." << endl;
 						}
 						else if (selection == 'b')
 						{
 							//mana potion
-							if (mPotion1 > 0)
+							if (p1ManaPotion > 0)
 							{
 								p1Magic += 25;
-								mPotion1--;
+								p1ManaPotion--;
 							}
 							else
-								cout << "Not enough mana potions. " << pOne << " looses turn." << endl;
+								cout << "Not enough mana potions. " << pOneName << " looses turn." << endl;
 						}
 						else
 						{
 							//poison
-							if (pPotion1 > 0)
+							if (p1PowerPotion > 0)
 							{
-								cout << pOne << " uses poison." << endl;
+								cout << pOneName << " uses poison." << endl;
 								p2Poison = true;
-								pPotion1--;
+								p1PowerPotion--;
 							}
 							else
-								cout << "Not enough poison potions. " << pOne << " looses turn." << endl;
+								cout << "Not enough poison potions. " << pOneName << " looses turn." << endl;
 						}
 					}
 
@@ -957,7 +966,7 @@ void main()
 				while (p2Turn && p2Health > 0)		//Player two's turn
 				{
 					system("cls");
-					cout << pTwo << " Status;" << endl
+					cout << pTwoName << " Status;" << endl
 						<< "Health: " << p2Health << " points" << endl		//outputs player 1 health
 						<< "Bar: ";
 					i = 0;
@@ -970,7 +979,7 @@ void main()
 					cout << "Mana: " << p2Magic << " points" << endl;		//displays player 2 mana
 					cout << "Stamina: " << p2Special << " points" << endl << endl;		//displays player 2 special points
 
-					cout << pOne << " Health: " << p1Health << " points" << endl		//displays opponent health bar
+					cout << pOneName << " Health: " << p1Health << " points" << endl		//displays opponent health bar
 						<< "Bar: ";
 					i = 0;
 					while (i < p1Health)
@@ -982,7 +991,7 @@ void main()
 
 					if (p2Poison)
 					{
-						cout << pTwo << " takes poison damage.";
+						cout << pTwoName << " takes poison damage.";
 						p2Health -= 5;
 						pCounter2++;
 						if (pCounter2 == 5)
@@ -994,7 +1003,7 @@ void main()
 							break;
 					}
 
-					cout << pTwo << " select your move." << endl << endl;		//player choose between 4 options to attack/defend/spAttk opponent and item menu
+					cout << pTwoName << " select your move." << endl << endl;		//player choose between 4 options to attack/defend/spAttk opponent and item menu
 					cout << "A - Attack" << endl;		//outputs menu options
 					cout << "B - Magic" << endl;
 					cout << "C - Special" << endl;
@@ -1019,7 +1028,7 @@ void main()
 							if (x <= 1)		//checks if player misses
 							{
 								cout << "O.o Critical Miss o.O" << endl
-									<< pTwo << "takes 5 damage." << endl;
+									<< pTwoName << "takes 5 damage." << endl;
 								p2Health -= 5;
 							}
 							else if (x <= p1Stats[4] && x > 1)		//checks for critical damage
@@ -1031,18 +1040,18 @@ void main()
 								damage = p2Stats[1];
 
 							damage = static_cast<int> (damage - (damage * p1Stats[5] / 100));
-							cout << pTwo << " hits for " << damage << " points." << endl;
+							cout << pTwoName << " hits for " << damage << " points." << endl;
 							p1Health -= damage;
 						}
 						else
-							cout << pTwo << " swings and misses." << endl;
+							cout << pTwoName << " swings and misses." << endl;
 					}
 					else if (selection == 'b')
 					{
 						//magic
 						damage = p2Stats[2];
 						damage = damage - (damage * p1Stats[6] / 100);
-						cout << pTwo << " uses magic for " << damage << " points of damage." << endl;
+						cout << pTwoName << " uses magic for " << damage << " points of damage." << endl;
 						p2Magic -= 10;
 						p1Health -= damage;
 					}
@@ -1061,7 +1070,7 @@ void main()
 
 								if (x <= 50)
 								{
-									cout << pTwo << " uses Bash." << endl;
+									cout << pTwoName << " uses Bash." << endl;
 									damage = static_cast<int> (p2Stats[3] - (p2Stats[3] * p1Stats[6] / 100));
 									p1Health = p1Health - damage;
 								}
@@ -1069,13 +1078,13 @@ void main()
 							else if (p1Class == "Mage")		//special mage method
 							{
 
-								cout << pTwo << " uses Healing Magic." << endl;
+								cout << pTwoName << " uses Healing Magic." << endl;
 								p2Health += 25;
 							}
 							else		//special rogue method
 							{
 								q = 0;
-								cout << pTwo << " uses Quick Hits with ";
+								cout << pTwoName << " uses Quick Hits with ";
 								for (i = 0; i < 3; i++)
 								{
 									srand(selection);
@@ -1092,14 +1101,14 @@ void main()
 							}
 						}
 						else
-							cout << pTwo << " tries to use special but doesn't have enough Stamina." << endl;
+							cout << pTwoName << " tries to use special but doesn't have enough Stamina." << endl;
 					}
 					else if (selection == 'i')		//item menu method
 					{
 						cout << "Items:" << endl		//outputs item menu
-							<< "A - Health Potion: " << hPotion2 << endl
-							<< "B - Mana Potion: " << mPotion2 << endl
-							<< "C - Poison: " << pPotion2 << endl
+							<< "A - Health Potion: " << p2HealthPotion << endl
+							<< "B - Mana Potion: " << p2ManaPotion << endl
+							<< "C - Poison: " << p2PowerPotion << endl
 							<< "Selection: ";
 						cin >> selection;
 						cin.ignore(1000, '\n');
@@ -1110,11 +1119,11 @@ void main()
 						if (selection == 'a')
 						{
 							//health potion
-							if (hPotion2 > 0)
+							if (p2HealthPotion > 0)
 							{
-								cout << pTwo << " uses health potion. +25HP" << endl;
+								cout << pTwoName << " uses health potion. +25HP" << endl;
 								p2Health += 25;
-								hPotion2--;
+								p2HealthPotion--;
 							}
 							else
 								cout << "Not enough health potions." << endl;
@@ -1122,10 +1131,10 @@ void main()
 						else if (selection == 'b')
 						{
 							//mana potion
-							if (mPotion2 > 0)
+							if (p2ManaPotion > 0)
 							{
 								p2Magic += 25;
-								mPotion2--;
+								p2ManaPotion--;
 							}
 							else
 								cout << "Not enough mana potions." << endl;
@@ -1133,11 +1142,11 @@ void main()
 						else
 						{
 							//poison potion
-							if (pPotion2 > 0)
+							if (p2PowerPotion > 0)
 							{
-								cout << pTwo << " uses poison." << endl;
+								cout << pTwoName << " uses poison." << endl;
 								p1Poison = true;
-								pPotion2--;
+								p2PowerPotion--;
 							}
 							else
 								cout << "Not enough poison potions." << endl;
@@ -1166,11 +1175,11 @@ void main()
 
 			if (p1Health > 0)		//player one win method
 			{
-				p1Winner = 1;
+				p1WinCount = 1;
 				p1Score++;
 				p1Stats[7]++;
 
-				cout << pOne << " is the Winner! Ready for your perks!?" << endl << endl;
+				cout << pOneName << " is the Winner! Ready for your perks!?" << endl << endl;
 
 				cout << "Select a stat boost:" << endl;		//offers a stat boost menu for player 1 if won
 				for (int q = 0; q < 5; q++)
@@ -1202,11 +1211,11 @@ void main()
 			}
 			else		//player two win method
 			{
-				p2Winner = 1;
+				p2WinCount = 1;
 				p2Score++;
 				p2Stats[7]++;
 
-				cout << pTwo << " is the Winner! Ready for your perks!?" << endl << endl;
+				cout << pTwoName << " is the Winner! Ready for your perks!?" << endl << endl;
 
 				cout << "Select a stat boost:" << endl;
 				for (int q = 0; q < 5; q++)
@@ -1240,24 +1249,24 @@ void main()
 			p1Stats[8]++;		//increments games played stat for p1 and p2
 			p2Stats[8]++;
 
-			cout << pOne << " score: " << p1Score << endl;		//outputs each player's scores
-			cout << pTwo << " score: " << p2Score << endl;
+			cout << pOneName << " score: " << p1Score << endl;		//outputs each player's scores
+			cout << pTwoName << " score: " << p2Score << endl;
 
 			if (p1Score > p2Score)		//outputs congratulations message based on winning player
-				cout << "Congrats " << pOne << ", you defeated " << pTwo << " by " << (p1Score - p2Score) << " point(s)." << endl << endl;
+				cout << "Congrats " << pOneName << ", you defeated " << pTwoName << " by " << (p1Score - p2Score) << " point(s)." << endl << endl;
 			else if (p2Score > p1Score)
-				cout << "Congrats " << pTwo << ", you defeated " << pOne << " by " << (p2Score - p1Score) << " point(s)." << endl << endl;
+				cout << "Congrats " << pTwoName << ", you defeated " << pOneName << " by " << (p2Score - p1Score) << " point(s)." << endl << endl;
 			else
-				cout << "Great Job " << pOne << " and " << pTwo << ", you tied!" << endl << endl;
+				cout << "Great Job " << pOneName << " and " << pTwoName << ", you tied!" << endl << endl;
 
 
-			cout << pOne << " would you like to save your character? (y) or (n)" << endl;		//offers to save player one stats
+			cout << pOneName << " would you like to save your character? (y) or (n)" << endl;		//offers to save player one stats
 			cin >> saveChar;
 			cin.ignore(1000, '\n');
 			if (tolower(saveChar) == 'y')		//player 1 save method	Cut/ || saveChar == 'Y' / and added tolower()
 			{
-				outFileA.open(pOne + ".txt");
-				outFileA << pOne << " ";
+				outFileA.open(pOneName + ".txt");
+				outFileA << pOneName << " ";
 				for (i = 0; i < 5; i++)
 					outFileA << p1Boost[i] << " ";
 				outFileA << "\n";
@@ -1266,13 +1275,13 @@ void main()
 				outFileA.close();
 			}
 
-			cout << pTwo << " would you like to save your character? (y) or (n)" << endl;		//offers to save player two stats
+			cout << pTwoName << " would you like to save your character? (y) or (n)" << endl;		//offers to save player two stats
 			cin >> saveChar;
 			cin.ignore(1000, '\n');
 			if (saveChar == 'y' || saveChar == 'Y')		//player 2 save method
 			{
-				outFileB.open(pTwo + ".txt");
-				outFileB << pTwo << " ";
+				outFileB.open(pTwoName + ".txt");
+				outFileB << pTwoName << " ";
 				for (i = 0; i < 5; i++)
 					outFileB << p2Boost[i] << " ";
 				outFileB << "\n";
@@ -1287,7 +1296,9 @@ void main()
 			cin.ignore(1000, '\n');
 
 			if (playGame != 'y' && playGame != 'Y')		//play again check
+			{
 				game = false;		//play again game state is set to false
+			}
 			else		//play again method
 			{
 				play = true;
@@ -1297,15 +1308,17 @@ void main()
 				cin.ignore(1000, '\n');
 				if (selection == 'y' || selection == 'Y')
 					pickHealth = true;		//sets pick health method to true so players may change settings for next loop
-				playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, hPotion1, mPotion1, pPotion1, hPotion2, mPotion2, pPotion2, pH);		//calls player stat reset function
+				playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, p1HealthPotion, p1ManaPotion, p1PowerPotion, p2HealthPotion, p2ManaPotion, p2PowerPotion, pH);		//calls player stat reset function
 			}
+
 			system("pause");		//holds screen for user
 			system("cls");		//clears screen for new game
-		}
-	}
+
+		}//End Play Loop
+	}//End Game Loop
 }
 
 /* TODO: known required fixes
-save files not acquiring correct stats
-add random number modifier for +/-(5) damage each attack
+-Save files not acquiring correct stats
+-Add random number modifier for +/-(5) damage each attack
 */
