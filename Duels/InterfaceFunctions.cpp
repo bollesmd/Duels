@@ -8,6 +8,8 @@ using namespace std;
 //Draw Menu
 void DrawTitle(bool newGame)
 {
+	system("cls");
+
 	//draw game title header
 	cout << "=================================================" << endl
 		<< "=================================================" << endl
