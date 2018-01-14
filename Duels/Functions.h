@@ -7,8 +7,9 @@ using namespace std;		//uses namespace std
 ///Interface Functions///
 void DrawTitle(bool newGame);
 
+
 //Initializes selection check function which confirms valid inputs against variable choices
-char selectCheck(char select, int s1);		
+char ValidateUserSelection(char select, string s);		
 
 
 ///Player Functions///
