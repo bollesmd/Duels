@@ -1,14 +1,12 @@
-//#pragma once
-//#include<iostream>
-//#include<string>
-
-using namespace std;		//uses namespace std
+//Using a single header file for all function declarations to reduce clutter
 
 ///Interface Functions///
 void DrawTitle(bool newGame);
 
 //Initializes selection check function which confirms valid inputs against variable choices
-char ValidateUserSelection(char select, string s);		
+char ValidateUserSelection(char select, std::string s);		
+
+///IO Functions///
 
 
 ///Player Functions///
