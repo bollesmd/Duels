@@ -48,9 +48,9 @@ void main()
 	double p1Health, p1Special, p1Magic;
 	double p2Health, p2Special, p2Magic;
 
-	char playGame, selection, pH = 'z', saveChar;
-	bool game = true, charSelect = true, turns = true, p1Turn = true, p2Turn = true, pickHealth = true,
-		play = true, p1Poison = false, p2Poison = false;
+	char playGame, selection, healthSelection = 'z', saveChar;
+	bool game = true, charSelect = true, turns = true, p1Turn = true, p2Turn = true, 
+		pickHealth = true, play = true, p1Poison = false, p2Poison = false;
 	time_t start, end;
 
 	//fstream variables for load/save files
@@ -65,6 +65,7 @@ void main()
 
 	DrawTitle(true);
 
+	#pragma region Set Player Names / Load Files
 	//Initialize player save files
 	//player one enters character name and loads stats if available
 	while (p1Turn)
@@ -98,7 +99,7 @@ void main()
 				else
 				{
 					//TODO: Load player's class and weapons
-					cout << "Thank you " << pOneName << ", loading player stats." << endl;		//displays message confirming file load
+					cout << "Thank you " << pOneName << ", loading player stats." << endl;
 					inFileA >> pOneName;
 
 					//load player stats into Player Boost array
@@ -119,7 +120,10 @@ void main()
 				system("cls");
 			}
 			else
-				cout << "Please retry." << endl;		//requests new entry if name is entered incorrectly
+			{
+				//requests new entry if user indicates name is entered incorrectly
+				cout << "Please retry." << endl;
+			}
 		}
 		else
 		{
@@ -130,9 +134,10 @@ void main()
 			cin >> selection;
 			cin.ignore(1000, '\n');
 
-			if (selection == 'y' || selection == 'Y')
+			if (tolower(selection) == 'y')
 			{
-				outFileA.open(pOneName + ".txt");		//creates save file for player
+				//creates save file for player
+				outFileA.open(pOneName + ".txt");
 				outFileA.close();
 				p1Turn = false;
 				system("cls");
@@ -140,7 +145,8 @@ void main()
 		}
 	}
 
-	while (p2Turn)		//player two enters name and loads stats if available
+	//player two enters name and loads stats if available
+	while (p2Turn)
 	{
 		DrawTitle(false);
 		cout << "Player two, do you have a saved character? (y) or (n) ";
@@ -148,28 +154,40 @@ void main()
 		cin.ignore(1000, '\n');
 		cout << endl;
 
-		if (selection == 'y' || selection == 'Y')
+		if (tolower(selection) == 'y')
 		{
-			cout << "What's your character's name? ";		//user enters character name
+			cout << "What's your character's name? ";
 			getline(cin, pTwoName);
 			cout << endl << "Please verify name: " << pTwoName << " is correct. (y) or (n) ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
 
-			if (selection == 'y' || selection == 'Y')		//checks if entry is correct and runs load stats if yes
+			if (tolower(selection) == 'y')
 			{
 				inFileB.open("Saves/" + pTwoName + ".txt");
 				
+				//Confirm Player save file exists
 				if (!inFileB)
-					cout << "Player two that file doesn't exist, start from scratch!";		//if file not found, offers to create file
+				{
+					//If file doesn't exist request entry of new file from user
+					cout << pTwoName << ": That saved character doesn't exist, starting from scratch!" << endl;
+				}
 				else
 				{
-					cout << "Thank you " << pTwoName << ", loading player stats." << endl;		//if file found loads player's stats
+					//TODO: Load player's class and weapons
+					cout << "Thank you " << pTwoName << ", loading player stats." << endl;
+					inFileB >> pTwoName;
+
+					//load player stats into Player Boost array
 					for (int i = 0; i < 5; i++)
+					{
 						inFileB >> p2Boost[i];
-					//inFileB >> "\n";
+					}
+
 					for (int i = 0; i < 9; i++)
+					{
 						inFileB >> p2Stats[i];
+					}
 				}
 
 				inFileB.close();
@@ -178,42 +196,39 @@ void main()
 				system("cls");
 			}
 			else
-				cout << "Please retry." << endl;		//requests new entry if name is entered incorrectly
+			{
+				//Requests new entry if name is entered incorrectly
+				cout << "Please retry." << endl;
+			}
 		}
 		else
 		{
-			cout << "Please enter a new character name: ";		//if no character exists for player, starts new one
+			//if no character exists for player, starts new one
+			cout << "Please enter a new character name: ";
 			getline(cin, pTwoName);
 			cout << "Please verify name: " << pTwoName << " is correct. (y) or (n) ";
 			cin >> selection;
 			cin.ignore(1000, '\n');
-			if (selection == 'y' || selection == 'Y')
+
+			if (tolower(selection) == 'y')
 			{
-				outFileB.open(pTwoName + ".txt");		//creates save file for player
+				//creates save file for player
+				outFileB.open(pTwoName + ".txt");
 				outFileB.close();
 				p2Turn = false;
 				system("cls");
 			}
 		}
 	}
+	#pragma endregion
 
 	//Enter primary game loop
 	while (game)		
 	{
-		//health selection loop runs only once a session to determine player starting health unless 
-			//otherwise indicated at end of game
-		while (pickHealth)
+		if (pickHealth)
 		{
-			DrawTitle(false);
-
-			cout << "Select Player Health Settings." << endl		//User selects player health level
-				<< "A - Low: 50%" << endl << "B - Normal: 100%" << endl << "C - High: 250%" << endl << "Selection: ";
-			cin >> selection;
-			cin.ignore(1000, '\n');
-
-			pH = selection = ValidateUserSelection(selection, "ABC");
-			
-			pickHealth = false;		//stops loop unless user requests new entry of health settings
+			healthSelection = SetPlayerHealth();
+			pickHealth = false;
 		}
 
 		//set who goes first
@@ -286,7 +301,7 @@ void main()
 
 		//Player health stat reset function
 		playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, p1HealthPotion, p1ManaPotion, p1PowerPotion,
-			p2HealthPotion, p2ManaPotion, p2PowerPotion, pH);
+			p2HealthPotion, p2ManaPotion, p2PowerPotion, healthSelection);
 
 		i = 0;
 
@@ -678,7 +693,10 @@ void main()
 
 		while (play)
 		{
-			playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, p1HealthPotion, p1ManaPotion, p1PowerPotion, p2HealthPotion, p2ManaPotion, p2PowerPotion, pH);		//function called to reset player status
+			//Reset player status
+			playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, 
+							p1HealthPotion, p1ManaPotion, p1PowerPotion, p2HealthPotion, 
+							p2ManaPotion, p2PowerPotion, healthSelection);		
 
 			//adds boosts to base stats for player one																																				//implement stat boosts for player 1
 			p1Health += p1Boost[2];
@@ -765,12 +783,15 @@ void main()
 					}
 
 					cout << endl;
-					cout << "Mana: " << p1Magic << " points" << endl;		//outputs mana
-					cout << "Stamina: " << p1Special << " points" << endl << endl;		//outputs stamina
+					//output mana
+					cout << "Mana: " << p1Magic << " points" << endl;
+					//output stamina
+					cout << "Stamina: " << p1Special << " points" << endl << endl;
 
+					//Display opponent's Info:
 					cout << pTwoName << " Health: " << p2Health << " points" << endl		//outputs opponents health bar
 						<< "Bar: ";
-					i = 0;
+
 					while (i < p2Health)
 					{
 						cout << "O";
@@ -778,8 +799,9 @@ void main()
 					}
 					cout << endl << endl;
 
-					if (p1Poison)		//checks and runs poison damage if player is poisoned
+					if (p1Poison)
 					{
+						//Calculate poison damage if player is poisoned
 						cout << pOneName << " takes poison damage.";
 						p1Health -= 5;
 						pCounter1++;		//increments poison counter and stops poison state when 5 is reached
@@ -969,11 +991,11 @@ void main()
 					cout << pTwoName << " Status;" << endl
 						<< "Health: " << p2Health << " points" << endl		//outputs player 1 health
 						<< "Bar: ";
-					i = 0;
-					while (i < p2Health)		//displays player health bar
+					
+					for(int i = 0; i < p2Health; i++)
 					{
+						//displays player health bar
 						cout << "O";
-						i++;
 					}
 					cout << endl;
 					cout << "Mana: " << p2Magic << " points" << endl;		//displays player 2 mana
@@ -1151,8 +1173,6 @@ void main()
 							else
 								cout << "Not enough poison potions." << endl;
 						}
-
-
 					}
 
 					system("Pause");
@@ -1181,16 +1201,22 @@ void main()
 
 				cout << pOneName << " is the Winner! Ready for your perks!?" << endl << endl;
 
-				cout << "Select a stat boost:" << endl;		//offers a stat boost menu for player 1 if won
+				//offers a stat boost menu for player 1 if won
+				cout << "Select a stat boost:" << endl;		
 				for (int q = 0; q < 5; q++)
+				{
 					if (p1StatBoosts[q])
+					{
 						cout << statBoosts[q] << endl;
+					}
+				}
 				cin >> selection;
 				cin.ignore(1000, '\n');
 
 				selection = ValidateUserSelection(selection, "ABCDE");
 
-				switch (selection)		//implements stat boost based on selection
+				//Implement stat boost
+				switch (selection)
 				{
 				case 'a':
 					p1Boost[0] += 1;
@@ -1209,8 +1235,9 @@ void main()
 					break;
 				}
 			}
-			else		//player two win method
+			else
 			{
+				//Player two wins
 				p2WinCount = 1;
 				p2Score++;
 				p2Stats[7]++;
@@ -1246,73 +1273,107 @@ void main()
 				}
 			}
 
-			p1Stats[8]++;		//increments games played stat for p1 and p2
+			//Increment number of games played stat for p1 and p2
+			p1Stats[8]++;		
 			p2Stats[8]++;
 
-			cout << pOneName << " score: " << p1Score << endl;		//outputs each player's scores
+			//output each player's scores
+			cout << pOneName << " score: " << p1Score << endl;
 			cout << pTwoName << " score: " << p2Score << endl;
 
-			if (p1Score > p2Score)		//outputs congratulations message based on winning player
+			//Output congratulations message based on winning player
+			if (p1Score > p2Score)
 				cout << "Congrats " << pOneName << ", you defeated " << pTwoName << " by " << (p1Score - p2Score) << " point(s)." << endl << endl;
 			else if (p2Score > p1Score)
 				cout << "Congrats " << pTwoName << ", you defeated " << pOneName << " by " << (p2Score - p1Score) << " point(s)." << endl << endl;
 			else
 				cout << "Great Job " << pOneName << " and " << pTwoName << ", you tied!" << endl << endl;
 
-
-			cout << pOneName << " would you like to save your character? (y) or (n)" << endl;		//offers to save player one stats
+			
+			cout << pOneName << " would you like to save your character? (y) or (n)" << endl;
 			cin >> saveChar;
 			cin.ignore(1000, '\n');
-			if (tolower(saveChar) == 'y')		//player 1 save method	Cut/ || saveChar == 'Y' / and added tolower()
+
+			//Save player one stats
+			if (tolower(saveChar) == 'y')
 			{
 				outFileA.open(pOneName + ".txt");
 				outFileA << pOneName << " ";
+
 				for (i = 0; i < 5; i++)
+				{
 					outFileA << p1Boost[i] << " ";
+				}
+
 				outFileA << "\n";
+				
 				for (i = 0; i < 9; i++)
+				{
 					outFileA << p1Stats[i] << " ";
+				}
+
 				outFileA.close();
 			}
 
-			cout << pTwoName << " would you like to save your character? (y) or (n)" << endl;		//offers to save player two stats
+			
+			cout << pTwoName << " would you like to save your character? (y) or (n)" << endl;
 			cin >> saveChar;
 			cin.ignore(1000, '\n');
-			if (saveChar == 'y' || saveChar == 'Y')		//player 2 save method
+
+			//Save player two stats
+			if (tolower(saveChar) == 'y')		
 			{
 				outFileB.open(pTwoName + ".txt");
 				outFileB << pTwoName << " ";
+				
 				for (i = 0; i < 5; i++)
+				{
 					outFileB << p2Boost[i] << " ";
+				}
+
 				outFileB << "\n";
+				
 				for (i = 0; i < 9; i++)
+				{
 					outFileB << p2Stats[i] << " ";
+				}
+
 				outFileB.close();
 			}
 
-
-			cout << "Would you like to play again? (y) or (n)" << endl;		//request another game
-			cin >> playGame;		//user inputs character value for play again
+			//User determines play again
+			cout << "Would you like to play again? (y) or (n)" << endl;
+			cin >> playGame;
 			cin.ignore(1000, '\n');
 
-			if (playGame != 'y' && playGame != 'Y')		//play again check
+			if (tolower(playGame) != 'y')
 			{
-				game = false;		//play again game state is set to false
+				//play again game state is set to false
+				game = false;		
 			}
-			else		//play again method
+			else
 			{
+				//Set up new game
 				play = true;
 				turns = true;
 				cout << "Would you like to change player health settings? (y) or (n): " << endl;		//requests new health settings
 				cin >> selection;
 				cin.ignore(1000, '\n');
-				if (selection == 'y' || selection == 'Y')
-					pickHealth = true;		//sets pick health method to true so players may change settings for next loop
-				playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, p1HealthPotion, p1ManaPotion, p1PowerPotion, p2HealthPotion, p2ManaPotion, p2PowerPotion, pH);		//calls player stat reset function
+
+				if (tolower(selection) == 'y')
+				{
+					//sets pick health to true so players may change settings for next loop
+					pickHealth = true;
+				}
+
+				//Call player stat reset function
+				playerStatus(p1Health, p2Health, p1Magic, p2Magic, p1Special, p2Special, 
+							p1HealthPotion, p1ManaPotion, p1PowerPotion, p2HealthPotion, 
+							p2ManaPotion, p2PowerPotion, healthSelection);
 			}
 
-			system("pause");		//holds screen for user
-			system("cls");		//clears screen for new game
+			system("pause");
+			system("cls");
 
 		}//End Play Loop
 	}//End Game Loop
