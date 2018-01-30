@@ -1,12 +1,11 @@
+//Final Project CSPG106: My first student C++ programming project 
+//Duels.cpp : Defines the entry point for the console application.
 //Michael Bolles
 //Created VS2010: 1/10/13 
 //Edited for VS1027: 1/1/18
 //Refactoring: Variable Naming Convention, Comments, Modularity and Methods
 	//to read easier for portfolio, while keeping logic intact 
 	//so as not to disrupt integrity of the original assignment.
-
-//Final Project CSPG106: My first student C++ programming project 
-// Duels.cpp : Defines the entry point for the console application.
 
 #include "stdafx.h"
 #include "functions.h"
@@ -15,7 +14,7 @@ using namespace std;
 
 void main()
 {
-	#pragma region Global Variable Declarations
+ #pragma region Global Variable Declarations
 	string pOneName, pTwoName;
 	string p1Class, p1Weapon, p1Armor;
 	string p2Class, p2Weapon, p2Armor;
@@ -27,7 +26,7 @@ void main()
 	int	p1HealthPotion = 2, p1ManaPotion = 2, p1PowerPotion = 2;
 	int p2HealthPotion = 2, p2ManaPotion = 2, p2PowerPotion = 2;
 
-	//TODO: rename nondescript variables
+	//TODO: rename non-descript variables
 	int	coin = 0, i, x, q;
 
 	double timer = 0;
@@ -49,8 +48,11 @@ void main()
 	double p2Health, p2Special, p2Magic;
 
 	char playGame, selection, healthSelection = 'z', saveChar;
-	bool game = true, charSelect = true, turns = true, p1Turn = true, p2Turn = true, 
-		pickHealth = true, play = true, p1Poison = false, p2Poison = false;
+	
+	bool game = true, charSelect = true, turns = true;
+	bool p1Turn = true, p2Turn = true;
+	bool pickHealth = true, play = true, p1Poison = false, p2Poison = false;
+	
 	time_t start, end;
 
 	//fstream variables for load/save files
@@ -266,7 +268,7 @@ void main()
 				case 'T':
 					coinToss = 't';
 					break;
-				default:
+				default:	
 					cout << "Incorrect entry, please re-enter";
 					cin >> coinToss;
 					continue;

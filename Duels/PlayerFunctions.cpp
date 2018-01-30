@@ -38,6 +38,7 @@ void playerStatus(double& p1H, double& p2H, double& p1M, double& p2M, double& p1
 	p2PP = 2;
 }
 
+
 char SetPlayerHealth()
 {
 	char healthSelection = 'z';
